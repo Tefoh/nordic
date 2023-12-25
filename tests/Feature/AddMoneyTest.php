@@ -59,4 +59,24 @@ class AddMoneyTest extends TestCase
 
         $this->assertDatabaseHas('wallets', $data);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_correct_response_after_a_successful_request()
+    {
+        $data = [
+            'user_id' => 2,
+            'amount' => 1000,
+        ];
+        $response = $this->post(route('add-money'), $data)
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'reference_id'
+            ]);
+
+        $this->assertDatabaseHas('wallets', [
+            'reference_id' => $response->json()['reference_id']
+        ]);
+    }
 }
