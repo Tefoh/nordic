@@ -79,4 +79,29 @@ class AddMoneyTest extends TestCase
             'reference_id' => $response->json()['reference_id']
         ]);
     }
+
+    /**
+     * @test
+     */
+    public function amount_of_a_wallet_cant_be_negative()
+    {
+        $data = [
+            'user_id' => 2,
+            'amount' => 500,
+        ];
+        $this->post(route('add-money'), $data)
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('wallets', $data);
+
+        $data = [
+            'user_id' => 2,
+            'amount' => -1000,
+        ];
+        $this->post(route('add-money'), $data)
+            ->assertStatus(422)
+            ->assertJsonValidationErrorFor('amount');
+
+        $this->assertDatabaseMissing('wallets', $data);
+    }
 }
