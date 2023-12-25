@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class AddMoneyTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */
@@ -33,5 +35,28 @@ class AddMoneyTest extends TestCase
         $this->post(route('add-money'), $data)
 //            ->assertJsonValidationErrorFor('user_id')
             ->assertJsonValidationErrorFor('amount');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_save_to_database_if_payload_is_correct()
+    {
+        $data = [
+            'user_id' => 2,
+            'amount' => 1000,
+        ];
+        $this->post(route('add-money'), $data)
+            ->assertStatus(200);
+
+        $this->assertDatabaseHas('wallets', $data);
+
+        $data = [
+            'user_id' => 2,
+            'amount' => -500,
+        ];
+        $this->post(route('add-money'), $data);
+
+        $this->assertDatabaseHas('wallets', $data);
     }
 }
