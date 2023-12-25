@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\v1;
 
+use App\Rules\NotNegativeWalletValueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddMoneyRequest extends FormRequest
@@ -45,7 +46,7 @@ class AddMoneyRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'integer', 'not_in:0'],
-            'amount' => ['required', 'integer', 'not_in:0'],
+            'amount' => ['required', 'integer', 'not_in:0', new NotNegativeWalletValueRule($this->user_id, $this->isNegative)],
         ];
     }
 }

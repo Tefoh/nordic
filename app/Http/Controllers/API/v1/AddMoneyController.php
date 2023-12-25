@@ -16,20 +16,6 @@ class AddMoneyController extends Controller
 
         $data['reference_id'] = rand(10000, 999999999);
 
-        $sum = Wallet::query()
-            ->where('user_id', $data['user_id'])
-            ->sum('amount');
-
-        $sum += $data['amount'];
-
-        if ($sum < 0) {
-            throw ValidationException::withMessages([
-                'amount' => [
-                    'Entered amount for this user is more than current amount of wallet'
-                ]
-            ]);
-        }
-
         Wallet::query()->create($data);
 
         return response()->json([
