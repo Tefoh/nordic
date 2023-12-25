@@ -13,8 +13,12 @@ class AddMoneyController extends Controller
     {
         $data = $request->toArray();
 
+        $data['reference_id'] = rand(10000, 999999999);
+
         Wallet::query()->create($data);
 
-        return response()->json();
+        return response()->json([
+            'reference_id' => $data['reference_id']
+        ]);
     }
 }

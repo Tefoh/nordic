@@ -12,6 +12,7 @@ class Wallet extends Model
     protected $fillable = [
         'user_id',
         'amount',
-        'date'
+        'date',
+        'reference_id',
     ];
 }
