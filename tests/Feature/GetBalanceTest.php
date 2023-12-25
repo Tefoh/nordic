@@ -21,7 +21,7 @@ class GetBalanceTest extends TestCase
         ]);
 
         $data = ['user_id' => 2];
-        $response = $this->get(route('get-balance'), $data)->json();
+        $response = $this->get(route('get-balance', $data))->json();
 
         $this->assertEquals(1000, $response['balance']);
 
@@ -31,7 +31,7 @@ class GetBalanceTest extends TestCase
         ]);
 
         $data = ['user_id' => 2];
-        $response = $this->get(route('get-balance'), $data)->json();
+        $response = $this->get(route('get-balance', $data))->json();
 
         $this->assertEquals(400, $response['balance']);
 
@@ -41,7 +41,7 @@ class GetBalanceTest extends TestCase
         ]);
 
         $data = ['user_id' => 2];
-        $response = $this->get(route('get-balance'), $data)->json();
+        $response = $this->get(route('get-balance', $data))->json();
 
         $this->assertEquals(600, $response['balance']);
     }
@@ -51,7 +51,7 @@ class GetBalanceTest extends TestCase
     public function get_balance_of_user_should_throw_error_if_user_not_found()
     {
         $data = ['user_id' => 2];
-        $this->get(route('get-balance'), $data)
+        $this->get(route('get-balance', $data))
             ->assertStatus(404);
     }
 }
